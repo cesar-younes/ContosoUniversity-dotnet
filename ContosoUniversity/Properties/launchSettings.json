@@ -18,6 +18,7 @@
     "ContosoUniversity": {
       "commandName": "Project",
       "launchBrowser": true,
+      "launchUrl": "Index",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

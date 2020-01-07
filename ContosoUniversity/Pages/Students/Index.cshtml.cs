@@ -7,23 +7,24 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ContosoUniversity.Data;
 using ContosoUniversity.Models;
+using ContosoUniversity.Interfaces;
 
 namespace ContosoUniversity
 {
     public class IndexModel : PageModel
     {
-        private readonly ContosoUniversity.Data.SchoolContext _context;
+        private readonly IAsyncRepository<Student> _repository;
 
-        public IndexModel(ContosoUniversity.Data.SchoolContext context)
+        public IndexModel(IAsyncRepository<Student> repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
-        public IList<Student> Student { get;set; }
+        public IList<Student> Students { get;set; }
 
         public async Task OnGetAsync()
         {
-            Student = await _context.Students.ToListAsync();
+            Students = await _repository.ListAllAsync();
         }
     }
 }

@@ -7,28 +7,30 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ContosoUniversity.Data;
 using ContosoUniversity.Models;
+using ContosoUniversity.Interfaces;
 
 namespace ContosoUniversity
 {
     public class DetailsModel : PageModel
     {
-        private readonly ContosoUniversity.Data.SchoolContext _context;
+        private readonly IAsyncRepository<Student> _repository;
 
-        public DetailsModel(ContosoUniversity.Data.SchoolContext context)
+        public DetailsModel(IAsyncRepository<Student> repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         public Student Student { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            Student = await _context.Students.FirstOrDefaultAsync(m => m.ID == id);
+            var allStudents = await _repository.ListAllAsync();
+            Student = allStudents.FirstOrDefault(m => m.Id == id);
 
             if (Student == null)
             {

@@ -7,29 +7,30 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ContosoUniversity.Data;
 using ContosoUniversity.Models;
+using ContosoUniversity.Interfaces;
 
 namespace ContosoUniversity
 {
     public class DeleteModel : PageModel
     {
-        private readonly ContosoUniversity.Data.SchoolContext _context;
+        private readonly IAsyncRepository<Student> _repository;
 
-        public DeleteModel(ContosoUniversity.Data.SchoolContext context)
+        public DeleteModel(IAsyncRepository<Student> repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         [BindProperty]
         public Student Student { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            Student = await _context.Students.FirstOrDefaultAsync(m => m.ID == id);
+            Student = await _repository.GetByIdAsync(id);
 
             if (Student == null)
             {
@@ -38,19 +39,19 @@ namespace ContosoUniversity
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int? id)
+        public async Task<IActionResult> OnPostAsync(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            Student = await _context.Students.FindAsync(id);
+            Student = await _repository.GetByIdAsync(id);
 
             if (Student != null)
             {
-                _context.Students.Remove(Student);
-                await _context.SaveChangesAsync();
+                await _repository.DeleteAsync(Student);
+                
             }
 
             return RedirectToPage("./Index");

@@ -8,29 +8,31 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ContosoUniversity.Data;
 using ContosoUniversity.Models;
+using ContosoUniversity.Interfaces;
 
 namespace ContosoUniversity
 {
     public class EditModel : PageModel
     {
-        private readonly ContosoUniversity.Data.SchoolContext _context;
+        private readonly IAsyncRepository<Student> _repository;
 
-        public EditModel(ContosoUniversity.Data.SchoolContext context)
+        public EditModel(IAsyncRepository<Student> repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         [BindProperty]
         public Student Student { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            Student = await _context.Students.FirstOrDefaultAsync(m => m.ID == id);
+            var allStudents = await _repository.ListAllAsync();
+            Student = allStudents.FirstOrDefault(m => m.Id == id);
 
             if (Student == null)
             {
@@ -48,15 +50,13 @@ namespace ContosoUniversity
                 return Page();
             }
 
-            _context.Attach(Student).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _repository.UpdateAsync(Student);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!StudentExists(Student.ID))
+                if (!StudentExists(Student.Id))
                 {
                     return NotFound();
                 }
@@ -69,9 +69,9 @@ namespace ContosoUniversity
             return RedirectToPage("./Index");
         }
 
-        private bool StudentExists(int id)
+        private bool StudentExists(string id)
         {
-            return _context.Students.Any(e => e.ID == id);
+            return _repository.GetByIdAsync(id)!=null?true:false;
         }
     }
 }
