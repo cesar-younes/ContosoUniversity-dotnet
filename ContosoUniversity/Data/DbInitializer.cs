@@ -52,18 +52,18 @@ namespace ContosoUniversity.Data
 
             var enrollments = new Enrollment[]
             {
-                new Enrollment{StudentId=students[0].Id,CourseId=courses[0].Id,Grade=Grade.A},
-                new Enrollment{StudentId=students[0].Id,CourseId=courses[1].Id,Grade=Grade.C},
-                new Enrollment{StudentId=students[0].Id,CourseId=courses[2].Id,Grade=Grade.B},
-                new Enrollment{StudentId=students[2].Id,CourseId=courses[0].Id,Grade=Grade.B},
-                new Enrollment{StudentId=students[2].Id,CourseId=courses[1].Id,Grade=Grade.F},
-                new Enrollment{StudentId=students[2].Id,CourseId=courses[2].Id,Grade=Grade.F},
-                new Enrollment{StudentId=students[3].Id,CourseId=courses[3].Id},
-                new Enrollment{StudentId=students[4].Id,CourseId=courses[4].Id},
-                new Enrollment{StudentId=students[4].Id,CourseId=courses[5].Id,Grade=Grade.F},
-                new Enrollment{StudentId=students[5].Id,CourseId=courses[6].Id,Grade=Grade.C},
-                new Enrollment{StudentId=students[6].Id,CourseId=courses[3].Id},
-                new Enrollment{StudentId=students[7].Id,CourseId=courses[4].Id,Grade=Grade.A},
+                new Enrollment{Id=Guid.NewGuid().ToString(),StudentId=students[0].Id,CourseId=courses[0].Id,Grade=Grade.A},
+                new Enrollment{Id=Guid.NewGuid().ToString(),StudentId=students[0].Id,CourseId=courses[1].Id,Grade=Grade.C},
+                new Enrollment{Id=Guid.NewGuid().ToString(),StudentId=students[0].Id,CourseId=courses[2].Id,Grade=Grade.B},
+                new Enrollment{Id=Guid.NewGuid().ToString(),StudentId=students[2].Id,CourseId=courses[0].Id,Grade=Grade.B},
+                new Enrollment{Id=Guid.NewGuid().ToString(),StudentId=students[2].Id,CourseId=courses[1].Id,Grade=Grade.F},
+                new Enrollment{Id=Guid.NewGuid().ToString(),StudentId=students[2].Id,CourseId=courses[2].Id,Grade=Grade.F},
+                new Enrollment{Id=Guid.NewGuid().ToString(),StudentId=students[3].Id,CourseId=courses[3].Id},
+                new Enrollment{Id=Guid.NewGuid().ToString(),StudentId=students[4].Id,CourseId=courses[4].Id},
+                new Enrollment{Id=Guid.NewGuid().ToString(),StudentId=students[4].Id,CourseId=courses[5].Id,Grade=Grade.F},
+                new Enrollment{Id=Guid.NewGuid().ToString(),StudentId=students[5].Id,CourseId=courses[6].Id,Grade=Grade.C},
+                new Enrollment{Id=Guid.NewGuid().ToString(),StudentId=students[6].Id,CourseId=courses[3].Id},
+                new Enrollment{Id=Guid.NewGuid().ToString(),StudentId=students[7].Id,CourseId=courses[4].Id,Grade=Grade.A},
             };
             foreach (Enrollment e in enrollments)
             {

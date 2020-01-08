@@ -23,13 +23,34 @@ namespace ContosoUniversity
 
         public IConfiguration Configuration { get; }
 
+        public void ConfigureDevelopmentServices(IServiceCollection services)
+        {
+            // use in-memory database
+            ConfigureInMemoryDatabases(services);
+        }
+
+        private void ConfigureInMemoryDatabases(IServiceCollection services)
+        {
+            // use in-memory database
+            services.AddDbContext<SchoolContext>(c =>
+                c.UseInMemoryDatabase("SchoolDb"));
+
+            ConfigureServices(services);
+        }
+
+        public void ConfigureProductionServices(IServiceCollection services)
+        {
+            // use real database
+            services.AddDbContext<SchoolContext>(c =>
+                c.UseSqlServer(Configuration.GetConnectionString("SchoolContext")));
+
+            ConfigureServices(services);
+        }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
-
-            services.AddDbContext<SchoolContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("SchoolContext")));
 
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
         }
