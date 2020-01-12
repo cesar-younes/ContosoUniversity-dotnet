@@ -13,9 +13,9 @@ namespace ContosoUniversity
 {
     public class DetailsModel : PageModel
     {
-        private readonly IAsyncRepository<Student> _repository;
+        private readonly IStudentRepository _repository;
 
-        public DetailsModel(IAsyncRepository<Student> repository)
+        public DetailsModel(IStudentRepository repository)
         {
             _repository = repository;
         }
@@ -29,8 +29,7 @@ namespace ContosoUniversity
                 return NotFound();
             }
 
-            var allStudents = await _repository.ListAllAsync();
-            Student = allStudents.FirstOrDefault(m => m.Id == id);
+            Student = await _repository.GetByIdWithEnrollmentsAndClassesAsync(id);
 
             if (Student == null)
             {
